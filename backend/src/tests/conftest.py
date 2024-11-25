@@ -50,7 +50,7 @@ def client(request):
 def prepare_valid_index_data():
     """Prepare valid test data by uploading the result files of a "valid" indexing run to a new blob container."""
     account_url = os.environ["STORAGE_ACCOUNT_BLOB_URL"]
-    credential = DefaultAzureCredential()
+    credential = os.environ["STORAGE_ACCOUNT_KEY"]
     blob_service_client = BlobServiceClient(account_url, credential=credential)
 
     # generate a unique data container name
@@ -80,7 +80,7 @@ def prepare_valid_index_data():
     _upload_files(blob_service_client, f"{this_directory}/data/test-index", index_name)
 
     endpoint = os.environ["COSMOS_URI_ENDPOINT"]
-    credential = DefaultAzureCredential()
+    credential = os.environ["COSMOS_KEY"]
     client = CosmosClient(endpoint, credential)
 
     container_store = "container-store"
@@ -157,7 +157,7 @@ def prepare_valid_index_data():
 def prepare_invalid_index_data():
     """Prepare valid test data by uploading the result files of a "valid" indexing run to a new blob container."""
     account_url = os.environ["STORAGE_ACCOUNT_BLOB_URL"]
-    credential = DefaultAzureCredential()
+    credential = os.environ["STORAGE_ACCOUNT_KEY"]
     blob_service_client = BlobServiceClient(account_url, credential=credential)
 
     # generate a unique data container name
@@ -177,7 +177,7 @@ def prepare_invalid_index_data():
     blob_client.delete_blob()
 
     endpoint = os.environ["COSMOS_URI_ENDPOINT"]
-    credential = DefaultAzureCredential()
+    credential = os.environ["COSMOS_KEY"]
     client = CosmosClient(endpoint, credential)
 
     container_store = "container-store"

@@ -1,0 +1,30 @@
+docker rmi -f backend-image
+docker build -t backend-image -f ./docker/Dockerfile-backend .
+
+python3 -m pip uninstall virtualenv
+python3 -m pip install virtualenv==20.27.0
+python3 -m pip install virtualenv
+
+docker run -p 80:80 \
+  -e AI_SEARCH_AUDIENCE="" \
+  -e AI_SEARCH_URL="https://legoaichat-ais320752578245.search.windows.net" \
+  -e AI_SEARCH_KEY="zQ6GZlYr6MZknydGHE88moMczLLrsRxsqR2bilEPvmAzSeBha0LC" \
+  -e APP_INSIGHTS_CONNECTION_STRING="" \
+  -e COSMOS_URI_ENDPOINT="https://legoaichat-cosmos.documents.azure.com:443/" \
+  -e COSMOS_KEY="GVSOsC21dhY6l8iT91XolA0c3ktg0yUvZs9HyAOqOueATNc2vV0GLMaASUeDnhk3FEZnnOVKT0ouACDbE53hUQ==" \
+  -e GRAPHRAG_API_BASE="https://legoaichat-openai.openai.azure.com" \
+  -e GRAPHRAG_API_VERSION="2024-08-01-preview" \
+  -e GRAPHRAG_API_KEY="01154446eff948919eda8a3d1ce2ec74" \
+  -e GRAPHRAG_COGNITIVE_SERVICES_ENDPOINT="https://cognitiveservices.azure.com/.default" \
+  -e GRAPHRAG_LLM_MODEL="gpt-4o" \
+  -e GRAPHRAG_LLM_DEPLOYMENT_NAME="gpt-4o" \
+  -e GRAPHRAG_EMBEDDING_MODEL="text-embedding-ada-002" \
+  -e GRAPHRAG_EMBEDDING_DEPLOYMENT_NAME="embeddings" \
+  -e REPORTERS="blob,console,app_insights" \
+  -e STORAGE_ACCOUNT_BLOB_URL="https://stlegoaichat320752578245.blob.core.windows.net" \
+  -e STORAGE_ACCOUNT_KEY="EXgZ568Yb3Q7xoeD9YVw6nEJ0h39+olcjS8358frSHu9L5lqFqbdRZ5AN80dmng3DjmMBJskGeOL+AStyqzsbg==" \
+  backend-image
+
+python .\run-indexing-job.py -i=test1
+
+http://localhost/index/start/test1

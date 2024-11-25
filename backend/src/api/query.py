@@ -11,6 +11,7 @@ import pandas as pd
 import yaml
 from azure.identity import DefaultAzureCredential
 from azure.search.documents import SearchClient
+from azure.core.credentials import AzureKeyCredential
 from azure.search.documents.models import VectorizedQuery
 from fastapi import (
     APIRouter,
@@ -615,7 +616,7 @@ class MultiAzureAISearch(BaseVectorStore):
             db_connection = SearchClient(
                 self.url,
                 collection_name,
-                DefaultAzureCredential(),
+                AzureKeyCredential(os.environ["AI_SEARCH_KEY"]),
                 audience=audience,
             )
             response = db_connection.search(

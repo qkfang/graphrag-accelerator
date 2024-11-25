@@ -38,7 +38,7 @@ storage_account_host = storage_account_blob_url.split("//")[1]
 storage_options = {
     "account_name": storage_account_name,
     "account_host": storage_account_host,
-    "credential": DefaultAzureCredential(),
+    "credential": os.environ["STORAGE_ACCOUNT_KEY"],
 }
 
 

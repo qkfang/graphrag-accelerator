@@ -2,6 +2,8 @@
 # Licensed under the MIT License.
 
 import pandas as pd
+import os
+
 from azure.identity import DefaultAzureCredential
 from graphrag.query.indexer_adapters import (
     read_indexer_covariates,
@@ -16,7 +18,7 @@ from src.api.azure_clients import BlobServiceClientSingleton
 storage_options = {
     "account_name": BlobServiceClientSingleton.get_storage_account_name(),
     "account_host": BlobServiceClientSingleton.get_instance().url.split("//")[1],
-    "credential": DefaultAzureCredential(),
+    "credential": os.environ["STORAGE_ACCOUNT_KEY"],
 }
 
 

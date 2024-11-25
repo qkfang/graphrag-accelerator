@@ -11,6 +11,25 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 ENV SETUPTOOLS_USE_DISTUTILS=stdlib
 ENV PYTHONPATH=/backend
 
+
+# Add the new environment variables
+ENV AI_SEARCH_AUDIENCE=""
+ENV AI_SEARCH_URL="https://legoaichat-ais320752578245.search.windows.net"
+ENV AI_SEARCH_KEY="zQ6GZlYr6MZknydGHE88moMczLLrsRxsqR2bilEPvmAzSeBha0LC"
+ENV APP_INSIGHTS_CONNECTION_STRING=""
+ENV COSMOS_URI_ENDPOINT="https://legoaichat-cosmos.documents.azure.com:443/"
+ENV COSMOS_KEY="GVSOsC21dhY6l8iT91XolA0c3ktg0yUvZs9HyAOqOueATNc2vV0GLMaASUeDnhk3FEZnnOVKT0ouACDbE53hUQ=="
+ENV GRAPHRAG_API_BASE="https://legoaichat-openai.openai.azure.com"
+ENV GRAPHRAG_API_VERSION="2024-08-01-preview"
+ENV GRAPHRAG_API_KEY="01154446eff948919eda8a3d1ce2ec74"
+ENV GRAPHRAG_COGNITIVE_SERVICES_ENDPOINT="https://cognitiveservices.azure.com/.default"
+ENV GRAPHRAG_LLM_MODEL="gpt-4o"
+ENV GRAPHRAG_LLM_DEPLOYMENT_NAME="gpt-4o"
+ENV GRAPHRAG_EMBEDDING_MODEL="text-embedding-ada-002"
+ENV GRAPHRAG_EMBEDDING_DEPLOYMENT_NAME="embeddings"
+ENV REPORTERS="blob,console,app_insights"
+ENV STORAGE_ACCOUNT_BLOB_URL="https://stlegoaichat320752578245.blob.core.windows.net/graphrag"
+
 COPY backend /backend
 RUN cd backend \
     && pip install poetry \

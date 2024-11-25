@@ -157,7 +157,12 @@ async def setup_indexing_pipeline(
 
     return BaseResponse(status="Indexing job scheduled")
 
-
+@index_route.get(
+    "/start/{index_name}",
+    summary="Start indexes",
+    response_model=BaseResponse,
+    responses={200: {"model": BaseResponse}},
+)
 async def _start_indexing_pipeline(index_name: str):
     # get sanitized name
     sanitized_index_name = sanitize_name(index_name)
@@ -191,9 +196,14 @@ async def _start_indexing_pipeline(index_name: str):
     data = yaml.safe_load(open(f"{this_directory}/pipeline-settings.yaml"))
     # dynamically set some values
     data["input"]["container_name"] = sanitized_storage_name
+    data["input"]["connection_string"] = "DefaultEndpointsProtocol=https;AccountName=stlegoaichat320752578245;AccountKey=EXgZ568Yb3Q7xoeD9YVw6nEJ0h39+olcjS8358frSHu9L5lqFqbdRZ5AN80dmng3DjmMBJskGeOL+AStyqzsbg==;EndpointSuffix=core.windows.net"
     data["storage"]["container_name"] = sanitized_index_name
+    data["storage"]["connection_string"] = "DefaultEndpointsProtocol=https;AccountName=stlegoaichat320752578245;AccountKey=EXgZ568Yb3Q7xoeD9YVw6nEJ0h39+olcjS8358frSHu9L5lqFqbdRZ5AN80dmng3DjmMBJskGeOL+AStyqzsbg==;EndpointSuffix=core.windows.net"
     data["reporting"]["container_name"] = sanitized_index_name
+    data["reporting"]["connection_string"] = "DefaultEndpointsProtocol=https;AccountName=stlegoaichat320752578245;AccountKey=EXgZ568Yb3Q7xoeD9YVw6nEJ0h39+olcjS8358frSHu9L5lqFqbdRZ5AN80dmng3DjmMBJskGeOL+AStyqzsbg==;EndpointSuffix=core.windows.net"
     data["cache"]["container_name"] = sanitized_index_name
+    data["cache"]["connection_string"] = "DefaultEndpointsProtocol=https;AccountName=stlegoaichat320752578245;AccountKey=EXgZ568Yb3Q7xoeD9YVw6nEJ0h39+olcjS8358frSHu9L5lqFqbdRZ5AN80dmng3DjmMBJskGeOL+AStyqzsbg==;EndpointSuffix=core.windows.net"
+    
     if "vector_store" in data["embeddings"]:
         data["embeddings"]["vector_store"]["collection_name"] = (
             f"{sanitized_index_name}_description_embedding"
@@ -437,7 +447,7 @@ async def delete_index(index_name: str):
 
         index_client = SearchIndexClient(
             endpoint=ai_search_url,
-            credential=DefaultAzureCredential(),
+            credential=os.environ["AI_SEARCH_KEY"],
             audience=ai_search_audience,
         )
         ai_search_index_name = f"{sanitized_index_name}_description_embedding"

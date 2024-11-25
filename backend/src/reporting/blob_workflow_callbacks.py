@@ -2,6 +2,7 @@
 # Licensed under the MIT License.
 
 # from dataclasses import asdict
+import os
 from datetime import datetime
 from typing import (
     Any,
@@ -42,7 +43,7 @@ class BlobWorkflowCallbacks(NoopWorkflowCallbacks):
             num_workflow_steps (int): A list of workflow names ordered by their execution. Defaults to [].
         """
         self._storage_account_blob_url = storage_account_blob_url
-        credential = DefaultAzureCredential()
+        credential = os.environ["STORAGE_ACCOUNT_KEY"]
         self._blob_service_client = BlobServiceClient(
             storage_account_blob_url, credential=credential
         )

@@ -28,7 +28,7 @@ class CosmosClientSingleton:
     def get_instance(cls):
         if cls._instance is None:
             endpoint = os.environ["COSMOS_URI_ENDPOINT"]
-            credential = DefaultAzureCredential()
+            credential = os.environ["COSMOS_KEY"]
             cls._instance = CosmosClient(endpoint, credential)
         return cls._instance
 
@@ -41,7 +41,7 @@ class BlobServiceClientSingleton:
     def get_instance(cls):
         if cls._instance is None:
             account_url = os.environ["STORAGE_ACCOUNT_BLOB_URL"]
-            credential = DefaultAzureCredential()
+            credential = os.environ["STORAGE_ACCOUNT_KEY"]
             cls._instance = BlobServiceClient(account_url, credential=credential)
         return cls._instance
 
@@ -59,7 +59,7 @@ class BlobServiceClientSingletonAsync:
     def get_instance(cls):
         if cls._instance is None:
             account_url = os.environ["STORAGE_ACCOUNT_BLOB_URL"]
-            credential = DefaultAzureCredential()
+            credential = os.environ["STORAGE_ACCOUNT_KEY"]
             cls._instance = BlobServiceClientAsync(account_url, credential=credential)
         return cls._instance
 
@@ -103,15 +103,18 @@ class AzureStorageClientManager:
         self.cosmos_uri_endpoint = self._env.str(
             "COSMOS_URI_ENDPOINT", ENDPOINT_ERROR_MSG
         )
-        credential = DefaultAzureCredential()
+        self.cosmos_key = self._env.str(
+            "COSMOS_KEY", ENDPOINT_ERROR_MSG
+        )
+        
         self._blob_service_client = BlobServiceClient(
-            account_url=os.environ["STORAGE_ACCOUNT_BLOB_URL"], credential=credential
+            account_url=os.environ["STORAGE_ACCOUNT_BLOB_URL"], credential=os.environ["STORAGE_ACCOUNT_KEY"]
         )
         self._blob_service_client_async = BlobServiceClientAsync(
-            account_url=os.environ["STORAGE_ACCOUNT_BLOB_URL"], credential=credential
+            account_url=os.environ["STORAGE_ACCOUNT_BLOB_URL"], credential=os.environ["STORAGE_ACCOUNT_KEY"]
         )
         self._cosmos_client = CosmosClient(
-            url=os.environ["COSMOS_URI_ENDPOINT"], credential=credential
+            url=os.environ["COSMOS_URI_ENDPOINT"], credential=os.environ["COSMOS_KEY"]
         )
 
     def get_blob_service_client(self) -> BlobServiceClient:
